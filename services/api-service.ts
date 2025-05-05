@@ -7,7 +7,7 @@ export interface Project {
   name: string;
   creator?: string;
   user_id?: string;
-  category?: string;
+  category: string;
   subcategory_id?: string;
   funding?: string;
   current_amount?: number;
