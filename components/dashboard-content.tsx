@@ -410,7 +410,9 @@ export default function DashboardContent() {
                     <div className="w-full bg-gray-200 rounded-full h-1.5">
                       <div
                         className="bg-green-500 h-1.5 rounded-full"
-                        style={{ width: `${Math.min(project.progress, 100)}%` }}
+                        style={{
+                          width: `${Math.min(project.progress ?? 0, 100)}%`,
+                        }}
                       ></div>
                     </div>
                     <span className="text-xs text-gray-500 mt-1 inline-block">
