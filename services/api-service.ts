@@ -96,6 +96,27 @@ export interface Stat {
   trend: "up" | "down";
 }
 
+type Project = {
+  id: string;
+  title: string;
+  creator: string;
+  user_id: string;
+  category: string;
+  subcategory_id: string;
+  funding: string;
+  current_amount: number;
+  progress: number;
+  status: string;
+  description: string;
+  funding_goal: number;
+  goal: number;
+  duration: number;
+  deadline: string;
+  backers: number;
+  createdAt: string;
+  endDate: string;
+};
+
 // Mock data for development/preview
 const mockProjects: Project[] = [
   {
