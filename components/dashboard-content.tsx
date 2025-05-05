@@ -1,75 +1,82 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect, useCallback, useRef } from "react"
-import { MoreHorizontal, Edit, Trash2, X, Eye, ChevronRight } from "lucide-react"
-import { apiService, type Project } from "@/services/api-service"
-import { useNotification } from "@/contexts/notification-context"
-import StatsCards from "./stats-cards"
-import Link from "next/link"
+import { useState, useEffect, useCallback, useRef, RefObject } from "react";
+import {
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  X,
+  Eye,
+  ChevronRight,
+} from "lucide-react";
+import { apiService, type Project } from "@/services/api-service";
+import { useNotification } from "@/contexts/notification-context";
+import StatsCards from "./stats-cards";
+import Link from "next/link";
 
 interface DashboardStat {
-  title: string
-  value: string
-  change: string
-  trend: "up" | "down"
+  title: string;
+  value: string;
+  change: string;
+  trend: "up" | "down";
 }
 
 export default function DashboardContent() {
-  const [stats, setStats] = useState<DashboardStat[]>([])
-  const [recentProjects, setRecentProjects] = useState<Project[]>([])
-  const [loading, setLoading] = useState(true)
-  const [projectsLoading, setProjectsLoading] = useState(true)
-  const [showMenu, setShowMenu] = useState<string | null>(null)
-  const [showEditModal, setShowEditModal] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [currentStat, setCurrentStat] = useState<DashboardStat | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [stats, setStats] = useState<DashboardStat[]>([]);
+  const [recentProjects, setRecentProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [projectsLoading, setProjectsLoading] = useState(true);
+  const [showMenu, setShowMenu] = useState<string | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [currentStat, setCurrentStat] = useState<DashboardStat | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [editFormData, setEditFormData] = useState({
     title: "",
     value: "",
     change: "",
     trend: "up" as "up" | "down",
-  })
+  });
 
-  const menuRef = useRef<HTMLDivElement>(null)
-  const modalRef = useRef<HTMLDivElement>(null)
-  const { showNotification } = useNotification()
+  const menuRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const { showNotification } = useNotification();
 
   // Handle click outside to close dropdown menu
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setShowMenu(null)
+        setShowMenu(null);
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Handle ESC key to close modals
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setShowEditModal(false)
-        setShowDeleteModal(false)
+        setShowEditModal(false);
+        setShowDeleteModal(false);
       }
-    }
+    };
 
-    window.addEventListener("keydown", handleEscKey)
+    window.addEventListener("keydown", handleEscKey);
     return () => {
-      window.removeEventListener("keydown", handleEscKey)
-    }
-  }, [])
+      window.removeEventListener("keydown", handleEscKey);
+    };
+  }, []);
 
   const fetchStats = useCallback(async () => {
     try {
-      setLoading(true)
-      const dashboardStats = await apiService.getDashboardStats()
+      setLoading(true);
+      const dashboardStats = await apiService.getDashboardStats();
 
       // Transform API data to component format
       const transformedStats: DashboardStat[] = [
@@ -95,126 +102,139 @@ export default function DashboardContent() {
           title: "Active Projects",
           value: dashboardStats.activeProjects,
           change: dashboardStats.activeProjectsGrowth,
-          trend: dashboardStats.activeProjectsGrowth.startsWith("+") ? "up" : "down",
+          trend: dashboardStats.activeProjectsGrowth.startsWith("+")
+            ? "up"
+            : "down",
         },
-      ]
+      ];
 
-      setStats(transformedStats)
+      setStats(transformedStats);
     } catch (error) {
-      console.error("Failed to fetch dashboard stats:", error)
-      showNotification("error", "Failed to load dashboard statistics")
+      console.error("Failed to fetch dashboard stats:", error);
+      showNotification("error", "Failed to load dashboard statistics");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [showNotification])
+  }, [showNotification]);
 
   const fetchRecentProjects = useCallback(async () => {
     try {
-      setProjectsLoading(true)
-      const projects = await apiService.getProjects({ limit: "5", sort: "createdAt:desc" })
-      setRecentProjects(projects)
+      setProjectsLoading(true);
+      const projects = await apiService.getProjects({
+        limit: "5",
+        sort: "createdAt:desc",
+      });
+      setRecentProjects(projects);
     } catch (error) {
-      console.error("Failed to fetch recent projects:", error)
-      showNotification("error", "Failed to load recent projects")
+      console.error("Failed to fetch recent projects:", error);
+      showNotification("error", "Failed to load recent projects");
     } finally {
-      setProjectsLoading(false)
+      setProjectsLoading(false);
     }
-  }, [showNotification])
+  }, [showNotification]);
 
   useEffect(() => {
-    fetchStats()
-    fetchRecentProjects()
-  }, [fetchStats, fetchRecentProjects])
+    fetchStats();
+    fetchRecentProjects();
+  }, [fetchStats, fetchRecentProjects]);
 
   const handleMenuToggle = (statTitle: string) => {
-    setShowMenu((prev) => (prev === statTitle ? null : statTitle))
-  }
+    setShowMenu((prev) => (prev === statTitle ? null : statTitle));
+  };
 
   const handleEditClick = (stat: DashboardStat) => {
     // Prevent event propagation to avoid immediate modal closing
-    event?.stopPropagation()
+    event?.stopPropagation();
 
-    setCurrentStat(stat)
+    setCurrentStat(stat);
     setEditFormData({
       title: stat.title,
       value: stat.value,
       change: stat.change,
       trend: stat.trend,
-    })
-    setShowEditModal(true)
-    setShowMenu(null)
-  }
+    });
+    setShowEditModal(true);
+    setShowMenu(null);
+  };
 
   const handleDeleteClick = (stat: DashboardStat) => {
     // Prevent event propagation to avoid immediate modal closing
-    event?.stopPropagation()
+    event?.stopPropagation();
 
-    setCurrentStat(stat)
-    setShowDeleteModal(true)
-    setShowMenu(null)
-  }
+    setCurrentStat(stat);
+    setShowDeleteModal(true);
+    setShowMenu(null);
+  };
 
   const handleEditSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!currentStat) return
+    if (!currentStat) return;
 
     try {
-      setIsSubmitting(true)
+      setIsSubmitting(true);
 
       // In a real app, this would call an API endpoint
       // await apiService.updateDashboardStat(currentStat.id, editFormData)
 
       // For demo, we'll update the local state
-      setStats((prevStats) => prevStats.map((stat) => (stat.title === currentStat.title ? { ...editFormData } : stat)))
+      setStats((prevStats) =>
+        prevStats.map((stat) =>
+          stat.title === currentStat.title ? { ...editFormData } : stat
+        )
+      );
 
-      showNotification("success", `${editFormData.title} has been updated`)
-      setShowEditModal(false)
+      showNotification("success", `${editFormData.title} has been updated`);
+      setShowEditModal(false);
     } catch (error) {
-      console.error("Failed to update stat:", error)
-      showNotification("error", "Failed to update dashboard statistic")
+      console.error("Failed to update stat:", error);
+      showNotification("error", "Failed to update dashboard statistic");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleDeleteConfirm = async () => {
-    if (!currentStat) return
+    if (!currentStat) return;
 
     try {
-      setIsSubmitting(true)
+      setIsSubmitting(true);
 
       // In a real app, this would call an API endpoint
       // await apiService.deleteDashboardStat(currentStat.id)
 
       // For demo, we'll update the local state
-      setStats((prevStats) => prevStats.filter((stat) => stat.title !== currentStat.title))
+      setStats((prevStats) =>
+        prevStats.filter((stat) => stat.title !== currentStat.title)
+      );
 
-      showNotification("success", `${currentStat.title} has been deleted`)
-      setShowDeleteModal(false)
+      showNotification("success", `${currentStat.title} has been deleted`);
+      setShowDeleteModal(false);
     } catch (error) {
-      console.error("Failed to delete stat:", error)
-      showNotification("error", "Failed to delete dashboard statistic")
+      console.error("Failed to delete stat:", error);
+      showNotification("error", "Failed to delete dashboard statistic");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
     setEditFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   // Modal backdrop click handler
   const handleModalBackdropClick = (e: React.MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-      setShowEditModal(false)
-      setShowDeleteModal(false)
+      setShowEditModal(false);
+      setShowDeleteModal(false);
     }
-  }
+  };
 
   // Get category color for badge
   const getCategoryColor = (category: string) => {
@@ -229,26 +249,26 @@ export default function DashboardContent() {
       Music: "bg-pink-100 text-pink-800",
       Technology: "bg-cyan-100 text-cyan-800",
       Food: "bg-orange-100 text-orange-800",
-    }
+    };
 
-    return colors[category] || "bg-gray-100 text-gray-800"
-  }
+    return colors[category] || "bg-gray-100 text-gray-800";
+  };
 
   // Get status color
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Active":
-        return "text-green-600"
+        return "text-green-600";
       case "Pending":
-        return "text-yellow-600"
+        return "text-yellow-600";
       case "Ended":
-        return "text-gray-600"
+        return "text-gray-600";
       case "Suspended":
-        return "text-red-600"
+        return "text-red-600";
       default:
-        return "text-gray-600"
+        return "text-gray-600";
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -257,9 +277,18 @@ export default function DashboardContent() {
         <p className="text-gray-500">Overview of your platform's performance</p>
       </div>
 
-      <StatsCards stats={stats} loading={loading} onMenuToggle={handleMenuToggle} showMenu={showMenu} menuRef={menuRef}>
+      <StatsCards
+        stats={stats}
+        loading={loading}
+        onMenuToggle={handleMenuToggle}
+        showMenu={showMenu}
+        menuRef={menuRef as RefObject<HTMLDivElement>}
+      >
         {(stat: DashboardStat) => (
-          <div className="relative" ref={showMenu === stat.title ? menuRef : undefined}>
+          <div
+            className="relative"
+            ref={showMenu === stat.title ? menuRef : undefined}
+          >
             <button
               onClick={() => handleMenuToggle(stat.title)}
               className="p-1.5 rounded-md text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
@@ -273,8 +302,8 @@ export default function DashboardContent() {
                 <button
                   className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   onClick={(e) => {
-                    e.stopPropagation()
-                    handleEditClick(stat)
+                    e.stopPropagation();
+                    handleEditClick(stat);
                   }}
                 >
                   <Edit className="h-4 w-4 mr-2" />
@@ -283,8 +312,8 @@ export default function DashboardContent() {
                 <button
                   className="flex w-full items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                   onClick={(e) => {
-                    e.stopPropagation()
-                    handleDeleteClick(stat)
+                    e.stopPropagation();
+                    handleDeleteClick(stat);
                   }}
                 >
                   <Trash2 className="h-4 w-4 mr-2" />
@@ -302,7 +331,11 @@ export default function DashboardContent() {
           <h2 className="text-lg font-medium text-gray-900">Recent Projects</h2>
           <Link
             href="#"
-            onClick={() => document.dispatchEvent(new CustomEvent("sidebarNavigate", { detail: "projects" }))}
+            onClick={() =>
+              document.dispatchEvent(
+                new CustomEvent("sidebarNavigate", { detail: "projects" })
+              )
+            }
             className="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center"
           >
             View all projects
@@ -329,14 +362,23 @@ export default function DashboardContent() {
           <div className="divide-y divide-gray-200">
             {recentProjects.length > 0 ? (
               recentProjects.map((project) => (
-                <div key={project.id} className="p-4 hover:bg-gray-50 transition-colors">
+                <div
+                  key={project.id}
+                  className="p-4 hover:bg-gray-50 transition-colors"
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-medium text-gray-900 truncate">{project.name}</h3>
+                      <h3 className="text-sm font-medium text-gray-900 truncate">
+                        {project.name}
+                      </h3>
                       <div className="flex items-center mt-1">
-                        <span className="text-xs text-gray-500 mr-3">by {project.creator}</span>
+                        <span className="text-xs text-gray-500 mr-3">
+                          by {project.creator}
+                        </span>
                         <span
-                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getCategoryColor(project.category)}`}
+                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getCategoryColor(
+                            project.category
+                          )}`}
                         >
                           {project.category}
                         </span>
@@ -344,8 +386,16 @@ export default function DashboardContent() {
                     </div>
                     <div className="flex items-center space-x-4">
                       <div className="text-right">
-                        <div className="text-sm font-medium text-gray-900">{project.funding}</div>
-                        <div className={`text-xs ${getStatusColor(project.status)}`}>{project.status}</div>
+                        <div className="text-sm font-medium text-gray-900">
+                          {project.funding}
+                        </div>
+                        <div
+                          className={`text-xs ${getStatusColor(
+                            project.status
+                          )}`}
+                        >
+                          {project.status}
+                        </div>
                       </div>
                       <Link
                         href="#"
@@ -363,7 +413,9 @@ export default function DashboardContent() {
                         style={{ width: `${Math.min(project.progress, 100)}%` }}
                       ></div>
                     </div>
-                    <span className="text-xs text-gray-500 mt-1 inline-block">{project.progress}% funded</span>
+                    <span className="text-xs text-gray-500 mt-1 inline-block">
+                      {project.progress}% funded
+                    </span>
                   </div>
                 </div>
               ))
@@ -388,7 +440,9 @@ export default function DashboardContent() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Edit Statistic</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Edit Statistic
+              </h3>
               <button
                 onClick={() => setShowEditModal(false)}
                 className="text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-full"
@@ -400,7 +454,10 @@ export default function DashboardContent() {
             <form onSubmit={handleEditSubmit} className="p-4">
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="title"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Title
                   </label>
                   <input
@@ -415,7 +472,10 @@ export default function DashboardContent() {
                 </div>
 
                 <div>
-                  <label htmlFor="value" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="value"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Value
                   </label>
                   <input
@@ -430,7 +490,10 @@ export default function DashboardContent() {
                 </div>
 
                 <div>
-                  <label htmlFor="change" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="change"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Change
                   </label>
                   <input
@@ -445,7 +508,10 @@ export default function DashboardContent() {
                 </div>
 
                 <div>
-                  <label htmlFor="trend" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="trend"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Trend
                   </label>
                   <select
@@ -495,7 +561,9 @@ export default function DashboardContent() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Confirm Deletion</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Confirm Deletion
+              </h3>
               <button
                 onClick={() => setShowDeleteModal(false)}
                 className="text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-full"
@@ -506,8 +574,9 @@ export default function DashboardContent() {
 
             <div className="p-4">
               <p className="text-gray-700">
-                Are you sure you want to delete <span className="font-semibold">{currentStat?.title}</span>? This action
-                cannot be undone.
+                Are you sure you want to delete{" "}
+                <span className="font-semibold">{currentStat?.title}</span>?
+                This action cannot be undone.
               </p>
 
               <div className="mt-6 flex justify-end space-x-3">
@@ -530,5 +599,5 @@ export default function DashboardContent() {
         </div>
       )}
     </div>
-  )
+  );
 }
