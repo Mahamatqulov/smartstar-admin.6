@@ -1,98 +1,99 @@
-import { apiRequest } from "@/utils/api"
+import { apiRequest } from "@/utils/api";
 
 // Define types for API data
 export interface Project {
-  id: string
-  title: string
-  creator?: string
-  user_id?: string
-  category?: string
-  subcategory_id?: string
-  funding?: string
-  current_amount?: number
-  progress?: number
-  status: string
-  description?: string
-  funding_goal?: number
-  goal?: number
-  duration?: number
-  deadline?: string
-  backers?: number
-  createdAt?: string
-  endDate?: string
+  id: string;
+  title: string;
+  name: string;
+  creator?: string;
+  user_id?: string;
+  category?: string;
+  subcategory_id?: string;
+  funding?: string;
+  current_amount?: number;
+  progress?: number;
+  status: string;
+  description?: string;
+  funding_goal?: number;
+  goal?: number;
+  duration?: number;
+  deadline?: string;
+  backers?: number;
+  createdAt?: string;
+  endDate?: string;
 }
 
 export interface User {
-  id: string
-  name: string
-  email: string
-  role: string
-  projects: number
-  backed: number
-  pledged: string
-  joined: string
-  status: string
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  projects: number;
+  backed: number;
+  pledged: string;
+  joined: string;
+  status: string;
 }
 
 export interface Category {
-  id: string
-  name: string
-  projects: number
-  funding: string
-  successRate: string
-  featured: boolean
-  status: string
-  description?: string
-  displayOrder?: number
-  subcategories?: Subcategory[]
+  id: string;
+  name: string;
+  projects: number;
+  funding: string;
+  successRate: string;
+  featured: boolean;
+  status: string;
+  description?: string;
+  displayOrder?: number;
+  subcategories?: Subcategory[];
 }
 
 export interface Subcategory {
-  id: string
-  name: string
-  parentId: string
-  projects: number
-  status: string
-  description?: string
-  displayOrder?: number
+  id: string;
+  name: string;
+  parentId: string;
+  projects: number;
+  status: string;
+  description?: string;
+  displayOrder?: number;
 }
 
 export interface Transaction {
-  id: string
-  project: string
-  backer: string
-  amount: string
-  date: string
-  status: string
+  id: string;
+  project: string;
+  backer: string;
+  amount: string;
+  date: string;
+  status: string;
 }
 
 export interface DashboardStats {
-  totalProjects: string
-  totalFunding: string
-  totalPledges: string
-  activeProjects: string
-  projectsGrowth: string
-  fundingGrowth: string
-  pledgesGrowth: string
-  activeProjectsGrowth: string
+  totalProjects: string;
+  totalFunding: string;
+  totalPledges: string;
+  activeProjects: string;
+  projectsGrowth: string;
+  fundingGrowth: string;
+  pledgesGrowth: string;
+  activeProjectsGrowth: string;
 }
 
 export interface FundingStats {
-  monthlyFunding: string
-  averagePledge: string
-  successfulProjects: string
-  failedProjects: string
-  monthlyFundingGrowth: string
-  averagePledgeGrowth: string
-  successfulProjectsGrowth: string
-  failedProjectsGrowth: string
+  monthlyFunding: string;
+  averagePledge: string;
+  successfulProjects: string;
+  failedProjects: string;
+  monthlyFundingGrowth: string;
+  averagePledgeGrowth: string;
+  successfulProjectsGrowth: string;
+  failedProjectsGrowth: string;
 }
 
 export interface Stat {
-  title: string
-  value: string
-  change: string
-  trend: "up" | "down"
+  title: string;
+  value: string;
+  change: string;
+  trend: "up" | "down";
 }
 
 // Mock data for development/preview
@@ -108,7 +109,8 @@ const mockProjects: Project[] = [
     current_amount: 12450,
     progress: 76,
     status: "active",
-    description: "A collection of vintage witchcraft illustrations and spells from the 1800s.",
+    description:
+      "A collection of vintage witchcraft illustrations and spells from the 1800s.",
     funding_goal: 10000,
     goal: 10000,
     duration: 30,
@@ -128,7 +130,8 @@ const mockProjects: Project[] = [
     current_amount: 34890,
     progress: 416,
     status: "active",
-    description: "An illustrated guide to the tombs of ancient Egyptian pharaohs.",
+    description:
+      "An illustrated guide to the tombs of ancient Egyptian pharaohs.",
     funding_goal: 25000,
     goal: 25000,
     duration: 45,
@@ -138,7 +141,7 @@ const mockProjects: Project[] = [
     endDate: "2023-04-15",
   },
   // Add more mock projects...
-]
+];
 
 const mockUsers: User[] = [
   {
@@ -164,7 +167,7 @@ const mockUsers: User[] = [
     status: "Active",
   },
   // Add more mock users...
-]
+];
 
 const mockSubcategories: Subcategory[] = [
   {
@@ -194,7 +197,7 @@ const mockSubcategories: Subcategory[] = [
     description: "Long-form comic storytelling",
     displayOrder: 1,
   },
-]
+];
 
 const mockCategories: Category[] = [
   {
@@ -222,7 +225,7 @@ const mockCategories: Category[] = [
     subcategories: mockSubcategories.filter((sub) => sub.parentId === "2"),
   },
   // Add more mock categories...
-]
+];
 
 const mockTransactions: Transaction[] = [
   {
@@ -242,7 +245,7 @@ const mockTransactions: Transaction[] = [
     status: "Completed",
   },
   // Add more mock transactions...
-]
+];
 
 const mockDashboardStats: DashboardStats = {
   totalProjects: "276,346",
@@ -253,7 +256,7 @@ const mockDashboardStats: DashboardStats = {
   fundingGrowth: "+4.7%",
   pledgesGrowth: "+1.3%",
   activeProjectsGrowth: "-0.8%",
-}
+};
 
 const mockFundingStats: FundingStats = {
   monthlyFunding: "$1,256,890",
@@ -264,7 +267,7 @@ const mockFundingStats: FundingStats = {
   averagePledgeGrowth: "+3.2%",
   successfulProjectsGrowth: "+8.7%",
   failedProjectsGrowth: "-2.3%",
-}
+};
 
 // API Service
 export const ApiService = {
@@ -272,21 +275,24 @@ export const ApiService = {
   async getProjects(params?: Record<string, string>): Promise<Project[]> {
     try {
       // Use the new API endpoint
-      const projects = await apiRequest<Project[]>("http://91.213.99.20:4000/api/projects/admin/all", { params })
-      return projects
+      const projects = await apiRequest<Project[]>(
+        "http://91.213.99.20:4000/api/projects/admin/all",
+        { params }
+      );
+      return projects;
     } catch (error) {
-      console.error("Failed to fetch projects:", error)
-      throw error
+      console.error("Failed to fetch projects:", error);
+      throw error;
     }
   },
 
   async getProject(id: string): Promise<Project> {
     try {
-      const project = await apiRequest<Project>(`/projects/${id}`)
-      return project
+      const project = await apiRequest<Project>(`/projects/${id}`);
+      return project;
     } catch (error) {
-      console.error(`Failed to fetch project ${id}:`, error)
-      throw error
+      console.error(`Failed to fetch project ${id}:`, error);
+      throw error;
     }
   },
 
@@ -301,19 +307,25 @@ export const ApiService = {
         funding_goal: project.funding_goal || project.goal || 0, // Use funding_goal or map from goal
         current_amount: project.current_amount || 0,
         deadline:
-          project.deadline || new Date(Date.now() + (project.duration || 30) * 24 * 60 * 60 * 1000).toISOString(), // Convert duration to deadline if needed
+          project.deadline ||
+          new Date(
+            Date.now() + (project.duration || 30) * 24 * 60 * 60 * 1000
+          ).toISOString(), // Convert duration to deadline if needed
         status: project.status || "active",
-      }
+      };
 
       // Use the new API endpoint
-      const newProject = await apiRequest<Project>("http://91.213.99.20:4000/api/projects/create", {
-        method: "POST",
-        body: projectData,
-      })
-      return newProject
+      const newProject = await apiRequest<Project>(
+        "http://91.213.99.20:4000/api/projects/create",
+        {
+          method: "POST",
+          body: projectData,
+        }
+      );
+      return newProject;
     } catch (error) {
-      console.error("Failed to create project:", error)
-      throw error
+      console.error("Failed to create project:", error);
+      throw error;
     }
   },
 
@@ -322,11 +334,11 @@ export const ApiService = {
       const updatedProject = await apiRequest<Project>(`/projects/${id}`, {
         method: "PUT",
         body: project,
-      })
-      return updatedProject
+      });
+      return updatedProject;
     } catch (error) {
-      console.error(`Failed to update project ${id}:`, error)
-      throw error
+      console.error(`Failed to update project ${id}:`, error);
+      throw error;
     }
   },
 
@@ -334,31 +346,31 @@ export const ApiService = {
     try {
       await apiRequest<void>(`/projects/${id}`, {
         method: "DELETE",
-      })
+      });
     } catch (error) {
-      console.error(`Failed to delete project ${id}:`, error)
-      throw error
+      console.error(`Failed to delete project ${id}:`, error);
+      throw error;
     }
   },
 
   // Users
   async getUsers(params?: Record<string, string>): Promise<User[]> {
     try {
-      const users = await apiRequest<User[]>("/users", { params })
-      return users
+      const users = await apiRequest<User[]>("/users", { params });
+      return users;
     } catch (error) {
-      console.error("Failed to fetch users:", error)
-      throw error
+      console.error("Failed to fetch users:", error);
+      throw error;
     }
   },
 
   async getUser(id: string): Promise<User> {
     try {
-      const user = await apiRequest<User>(`/users/${id}`)
-      return user
+      const user = await apiRequest<User>(`/users/${id}`);
+      return user;
     } catch (error) {
-      console.error(`Failed to fetch user ${id}:`, error)
-      throw error
+      console.error(`Failed to fetch user ${id}:`, error);
+      throw error;
     }
   },
 
@@ -367,11 +379,11 @@ export const ApiService = {
       const newUser = await apiRequest<User>("/users", {
         method: "POST",
         body: user,
-      })
-      return newUser
+      });
+      return newUser;
     } catch (error) {
-      console.error("Failed to create user:", error)
-      throw error
+      console.error("Failed to create user:", error);
+      throw error;
     }
   },
 
@@ -380,11 +392,11 @@ export const ApiService = {
       const updatedUser = await apiRequest<User>(`/users/${id}`, {
         method: "PUT",
         body: user,
-      })
-      return updatedUser
+      });
+      return updatedUser;
     } catch (error) {
-      console.error(`Failed to update user ${id}:`, error)
-      throw error
+      console.error(`Failed to update user ${id}:`, error);
+      throw error;
     }
   },
 
@@ -392,10 +404,10 @@ export const ApiService = {
     try {
       await apiRequest<void>(`/users/${id}`, {
         method: "DELETE",
-      })
+      });
     } catch (error) {
-      console.error(`Failed to delete user ${id}:`, error)
-      throw error
+      console.error(`Failed to delete user ${id}:`, error);
+      throw error;
     }
   },
 
@@ -403,21 +415,23 @@ export const ApiService = {
   async getCategories(params?: Record<string, string>): Promise<Category[]> {
     try {
       // Use the specific endpoint provided by the user
-      const categories = await apiRequest<Category[]>("/category/all", { params })
-      return categories
+      const categories = await apiRequest<Category[]>("/category/all", {
+        params,
+      });
+      return categories;
     } catch (error) {
-      console.error("Failed to fetch categories:", error)
-      throw error
+      console.error("Failed to fetch categories:", error);
+      throw error;
     }
   },
 
   async getCategory(id: string): Promise<Category> {
     try {
-      const category = await apiRequest<Category>(`/categories/${id}`)
-      return category
+      const category = await apiRequest<Category>(`/categories/${id}`);
+      return category;
     } catch (error) {
-      console.error(`Failed to fetch category ${id}:`, error)
-      throw error
+      console.error(`Failed to fetch category ${id}:`, error);
+      throw error;
     }
   },
 
@@ -428,39 +442,47 @@ export const ApiService = {
       const newCategory = await apiRequest<Category>("/category/create", {
         method: "POST",
         body: category,
-      })
-      return newCategory
+      });
+      return newCategory;
     } catch (error) {
-      console.error("Failed to create category:", error)
-      throw error
+      console.error("Failed to create category:", error);
+      throw error;
     }
   },
 
   // Add the createSubcategory method
-  async createSubcategory(subcategory: Partial<Subcategory>): Promise<Subcategory> {
+  async createSubcategory(
+    subcategory: Partial<Subcategory>
+  ): Promise<Subcategory> {
     try {
       // Use the specific endpoint provided by the user
-      const newSubcategory = await apiRequest<Subcategory>("/category/sub/create", {
-        method: "POST",
-        body: subcategory,
-      })
-      return newSubcategory
+      const newSubcategory = await apiRequest<Subcategory>(
+        "/category/sub/create",
+        {
+          method: "POST",
+          body: subcategory,
+        }
+      );
+      return newSubcategory;
     } catch (error) {
-      console.error("Failed to create subcategory:", error)
-      throw error
+      console.error("Failed to create subcategory:", error);
+      throw error;
     }
   },
 
-  async updateCategory(id: string, category: Partial<Category>): Promise<Category> {
+  async updateCategory(
+    id: string,
+    category: Partial<Category>
+  ): Promise<Category> {
     try {
       const updatedCategory = await apiRequest<Category>(`/categories/${id}`, {
         method: "PUT",
         body: category,
-      })
-      return updatedCategory
+      });
+      return updatedCategory;
     } catch (error) {
-      console.error(`Failed to update category ${id}:`, error)
-      throw error
+      console.error(`Failed to update category ${id}:`, error);
+      throw error;
     }
   },
 
@@ -468,43 +490,47 @@ export const ApiService = {
     try {
       await apiRequest<void>(`/categories/${id}`, {
         method: "DELETE",
-      })
+      });
     } catch (error) {
-      console.error(`Failed to delete category ${id}:`, error)
-      throw error
+      console.error(`Failed to delete category ${id}:`, error);
+      throw error;
     }
   },
 
   // Transactions
-  async getTransactions(params?: Record<string, string>): Promise<Transaction[]> {
+  async getTransactions(
+    params?: Record<string, string>
+  ): Promise<Transaction[]> {
     try {
-      const transactions = await apiRequest<Transaction[]>("/transactions", { params })
-      return transactions
+      const transactions = await apiRequest<Transaction[]>("/transactions", {
+        params,
+      });
+      return transactions;
     } catch (error) {
-      console.error("Failed to fetch transactions:", error)
-      throw error
+      console.error("Failed to fetch transactions:", error);
+      throw error;
     }
   },
 
   // Dashboard Stats
   async getDashboardStats(): Promise<DashboardStats> {
     try {
-      const stats = await apiRequest<DashboardStats>("/stats/dashboard")
-      return stats
+      const stats = await apiRequest<DashboardStats>("/stats/dashboard");
+      return stats;
     } catch (error) {
-      console.error("Failed to fetch dashboard stats:", error)
-      throw error
+      console.error("Failed to fetch dashboard stats:", error);
+      throw error;
     }
   },
 
   // Funding Stats
   async getFundingStats(): Promise<FundingStats> {
     try {
-      const stats = await apiRequest<FundingStats>("/stats/funding")
-      return stats
+      const stats = await apiRequest<FundingStats>("/stats/funding");
+      return stats;
     } catch (error) {
-      console.error("Failed to fetch funding stats:", error)
-      throw error
+      console.error("Failed to fetch funding stats:", error);
+      throw error;
     }
   },
 
@@ -513,22 +539,22 @@ export const ApiService = {
     getProjects(): Promise<Project[]> {
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve([...mockProjects])
-        }, 500)
-      })
+          resolve([...mockProjects]);
+        }, 500);
+      });
     },
 
     getProject(id: string): Promise<Project> {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          const project = mockProjects.find((p) => p.id === id)
+          const project = mockProjects.find((p) => p.id === id);
           if (project) {
-            resolve({ ...project })
+            resolve({ ...project });
           } else {
-            reject(new Error(`Project with ID ${id} not found`))
+            reject(new Error(`Project with ID ${id} not found`));
           }
-        }, 300)
-      })
+        }, 300);
+      });
     },
 
     createProject(project: Partial<Project>): Promise<Project> {
@@ -550,66 +576,73 @@ export const ApiService = {
             goal: project.goal || project.funding_goal || 0,
             duration: project.duration,
             deadline:
-              project.deadline || new Date(Date.now() + (project.duration || 30) * 24 * 60 * 60 * 1000).toISOString(),
+              project.deadline ||
+              new Date(
+                Date.now() + (project.duration || 30) * 24 * 60 * 60 * 1000
+              ).toISOString(),
             backers: 0,
             createdAt: new Date().toISOString().split("T")[0],
             endDate:
               project.deadline ||
-              new Date(Date.now() + (project.duration || 30) * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
-          }
-          mockProjects.push(newProject)
-          resolve({ ...newProject })
-        }, 500)
-      })
+              new Date(
+                Date.now() + (project.duration || 30) * 24 * 60 * 60 * 1000
+              )
+                .toISOString()
+                .split("T")[0],
+          };
+          mockProjects.push(newProject);
+          resolve({ ...newProject });
+        }, 500);
+      });
     },
 
     updateProject(id: string, project: Partial<Project>): Promise<Project> {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          const index = mockProjects.findIndex((p) => p.id === id)
+          const index = mockProjects.findIndex((p) => p.id === id);
           if (index !== -1) {
-            mockProjects[index] = { ...mockProjects[index], ...project }
-            resolve({ ...mockProjects[index] })
+            mockProjects[index] = { ...mockProjects[index], ...project };
+            resolve({ ...mockProjects[index] });
           } else {
-            reject(new Error(`Project with ID ${id} not found`))
+            reject(new Error(`Project with ID ${id} not found`));
           }
-        }, 500)
-      })
+        }, 500);
+      });
     },
 
     deleteProject(id: string): Promise<void> {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          const index = mockProjects.findIndex((p) => p.id === id)
+          const index = mockProjects.findIndex((p) => p.id === id);
           if (index !== -1) {
-            mockProjects.splice(index, 1)
-            resolve()
+            mockProjects.splice(index, 1);
+            resolve();
           } else {
-            reject(new Error(`Project with ID ${id} not found`))
+            reject(new Error(`Project with ID ${id} not found`));
           }
-        }, 500)
-      })
+        }, 500);
+      });
     },
 
     getUsers(): Promise<User[]> {
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve([...mockUsers])
-        }, 500)
-      })
+          resolve([...mockUsers]);
+        }, 500);
+      });
     },
 
     getUser(id: string): Promise<User> {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          const user = mockUsers.find((u) => u.id === id)
+          const user = mockUsers.find((u) => u.id === id);
           if (user) {
-            resolve({ ...user })
+            resolve({ ...user });
           } else {
-            reject(new Error(`User with ID ${id} not found`))
+            reject(new Error(`User with ID ${id} not found`));
           }
-        }, 300)
-      })
+        }, 300);
+      });
     },
 
     createUser(user: Partial<User>): Promise<User> {
@@ -623,41 +656,45 @@ export const ApiService = {
             projects: user.projects || 0,
             backed: user.backed || 0,
             pledged: user.pledged || "$0",
-            joined: new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }),
+            joined: new Date().toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            }),
             status: user.status || "Active",
-          }
-          mockUsers.push(newUser)
-          resolve({ ...newUser })
-        }, 500)
-      })
+          };
+          mockUsers.push(newUser);
+          resolve({ ...newUser });
+        }, 500);
+      });
     },
 
     updateUser(id: string, user: Partial<User>): Promise<User> {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          const index = mockUsers.findIndex((u) => u.id === id)
+          const index = mockUsers.findIndex((u) => u.id === id);
           if (index !== -1) {
-            mockUsers[index] = { ...mockUsers[index], ...user }
-            resolve({ ...mockUsers[index] })
+            mockUsers[index] = { ...mockUsers[index], ...user };
+            resolve({ ...mockUsers[index] });
           } else {
-            reject(new Error(`User with ID ${id} not found`))
+            reject(new Error(`User with ID ${id} not found`));
           }
-        }, 500)
-      })
+        }, 500);
+      });
     },
 
     deleteUser(id: string): Promise<void> {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          const index = mockUsers.findIndex((u) => u.id === id)
+          const index = mockUsers.findIndex((u) => u.id === id);
           if (index !== -1) {
-            mockUsers.splice(index, 1)
-            resolve()
+            mockUsers.splice(index, 1);
+            resolve();
           } else {
-            reject(new Error(`User with ID ${id} not found`))
+            reject(new Error(`User with ID ${id} not found`));
           }
-        }, 500)
-      })
+        }, 500);
+      });
     },
 
     getCategories(): Promise<Category[]> {
@@ -674,24 +711,26 @@ export const ApiService = {
               featured: category.featured || false,
               status: category.status || "Active",
               // Ensure subcategories is an array
-              subcategories: Array.isArray(category.subcategories) ? category.subcategories : [],
-            })),
-          )
-        }, 500)
-      })
+              subcategories: Array.isArray(category.subcategories)
+                ? category.subcategories
+                : [],
+            }))
+          );
+        }, 500);
+      });
     },
 
     getCategory(id: string): Promise<Category> {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          const category = mockCategories.find((c) => c.id === id)
+          const category = mockCategories.find((c) => c.id === id);
           if (category) {
-            resolve({ ...category })
+            resolve({ ...category });
           } else {
-            reject(new Error(`Category with ID ${id} not found`))
+            reject(new Error(`Category with ID ${id} not found`));
           }
-        }, 300)
-      })
+        }, 300);
+      });
     },
 
     createCategory(category: Partial<Category>): Promise<Category> {
@@ -708,11 +747,11 @@ export const ApiService = {
             description: category.description,
             displayOrder: category.displayOrder || mockCategories.length + 1,
             subcategories: [],
-          }
-          mockCategories.push(newCategory)
-          resolve({ ...newCategory })
-        }, 500)
-      })
+          };
+          mockCategories.push(newCategory);
+          resolve({ ...newCategory });
+        }, 500);
+      });
     },
 
     // Add mock implementation for createSubcategory
@@ -720,14 +759,20 @@ export const ApiService = {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           if (!subcategory.parentId) {
-            reject(new Error("Parent category ID is required"))
-            return
+            reject(new Error("Parent category ID is required"));
+            return;
           }
 
-          const parentCategory = mockCategories.find((c) => c.id === subcategory.parentId)
+          const parentCategory = mockCategories.find(
+            (c) => c.id === subcategory.parentId
+          );
           if (!parentCategory) {
-            reject(new Error(`Parent category with ID ${subcategory.parentId} not found`))
-            return
+            reject(
+              new Error(
+                `Parent category with ID ${subcategory.parentId} not found`
+              )
+            );
+            return;
           }
 
           const newSubcategory: Subcategory = {
@@ -737,76 +782,78 @@ export const ApiService = {
             projects: 0,
             status: subcategory.status || "Active",
             description: subcategory.description,
-            displayOrder: subcategory.displayOrder || (parentCategory.subcategories?.length || 0) + 1,
-          }
+            displayOrder:
+              subcategory.displayOrder ||
+              (parentCategory.subcategories?.length || 0) + 1,
+          };
 
           // Add to mock subcategories
-          mockSubcategories.push(newSubcategory)
+          mockSubcategories.push(newSubcategory);
 
           // Update parent category
           if (!parentCategory.subcategories) {
-            parentCategory.subcategories = []
+            parentCategory.subcategories = [];
           }
-          parentCategory.subcategories.push(newSubcategory)
+          parentCategory.subcategories.push(newSubcategory);
 
-          resolve({ ...newSubcategory })
-        }, 500)
-      })
+          resolve({ ...newSubcategory });
+        }, 500);
+      });
     },
 
     updateCategory(id: string, category: Partial<Category>): Promise<Category> {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          const index = mockCategories.findIndex((c) => c.id === id)
+          const index = mockCategories.findIndex((c) => c.id === id);
           if (index !== -1) {
-            mockCategories[index] = { ...mockCategories[index], ...category }
-            resolve({ ...mockCategories[index] })
+            mockCategories[index] = { ...mockCategories[index], ...category };
+            resolve({ ...mockCategories[index] });
           } else {
-            reject(new Error(`Category with ID ${id} not found`))
+            reject(new Error(`Category with ID ${id} not found`));
           }
-        }, 500)
-      })
+        }, 500);
+      });
     },
 
     deleteCategory(id: string): Promise<void> {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          const index = mockCategories.findIndex((c) => c.id === id)
+          const index = mockCategories.findIndex((c) => c.id === id);
           if (index !== -1) {
-            mockCategories.splice(index, 1)
-            resolve()
+            mockCategories.splice(index, 1);
+            resolve();
           } else {
-            reject(new Error(`Category with ID ${id} not found`))
+            reject(new Error(`Category with ID ${id} not found`));
           }
-        }, 500)
-      })
+        }, 500);
+      });
     },
 
     getTransactions(): Promise<Transaction[]> {
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve([...mockTransactions])
-        }, 500)
-      })
+          resolve([...mockTransactions]);
+        }, 500);
+      });
     },
 
     getDashboardStats(): Promise<DashboardStats> {
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve({ ...mockDashboardStats })
-        }, 500)
-      })
+          resolve({ ...mockDashboardStats });
+        }, 500);
+      });
     },
 
     getFundingStats(): Promise<FundingStats> {
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve({ ...mockFundingStats })
-        }, 500)
-      })
+          resolve({ ...mockFundingStats });
+        }, 500);
+      });
     },
   },
-}
+};
 
 // Determine if we're in preview mode
 const isPreviewMode =
@@ -814,7 +861,7 @@ const isPreviewMode =
   (window.location.hostname.includes("vercel.app") ||
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1" ||
-    process.env.NODE_ENV === "development")
+    process.env.NODE_ENV === "development");
 
 // Export the appropriate service
-export const apiService = isPreviewMode ? ApiService.mock : ApiService
+export const apiService = isPreviewMode ? ApiService.mock : ApiService;
