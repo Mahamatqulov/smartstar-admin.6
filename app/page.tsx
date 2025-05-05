@@ -1,66 +1,72 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import AdminSidebar from "@/components/admin-sidebar"
-import AdminHeader from "@/components/admin-header"
-import DashboardContent from "@/components/dashboard-content"
-import ProjectsContent from "@/components/projects-content"
-import UsersContent from "@/components/users-content"
-import FundingContent from "@/components/funding-content"
-import CategoriesContent from "@/components/categories-content"
-import SettingsContent from "@/components/settings-content"
-import { useAuth } from "@/contexts/auth-context"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import AdminSidebar from "@/components/admin-sidebar";
+import AdminHeader from "@/components/admin-header";
+import DashboardContent from "@/components/dashboard-content";
+import ProjectsContent from "@/components/projects-content";
+import UsersContent from "@/components/users-content";
+import FundingContent from "@/components/funding-content";
+import CategoriesContent from "@/components/categories-content";
+import SettingsContent from "@/components/settings-content";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function Home() {
-  const [currentPage, setCurrentPage] = useState("dashboard")
-  const [isLoading, setIsLoading] = useState(false)
-  const { user, loading } = useAuth()
-  const router = useRouter()
+  const [currentPage, setCurrentPage] = useState("dashboard");
+  const [isLoading, setIsLoading] = useState(false);
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
   // Check authentication
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login")
+      router.push("/login");
     }
-  }, [loading, user, router])
+  }, [loading, user, router]);
 
   // Load saved page from localStorage
   useEffect(() => {
-    const savedPage = localStorage.getItem("currentPage")
+    const savedPage = localStorage.getItem("currentPage");
     if (savedPage) {
-      setCurrentPage(savedPage)
+      setCurrentPage(savedPage);
     }
-  }, [])
+  }, []);
 
   // Save current page to localStorage when it changes
   useEffect(() => {
-    localStorage.setItem("currentPage", currentPage)
-  }, [currentPage])
+    localStorage.setItem("currentPage", currentPage);
+  }, [currentPage]);
 
   // Listen for sidebar navigation events
   useEffect(() => {
     const handleSidebarNavigate = (event: Event) => {
-      const customEvent = event as CustomEvent
+      const customEvent = event as CustomEvent;
       if (customEvent.detail) {
-        setCurrentPage(customEvent.detail)
+        setCurrentPage(customEvent.detail);
       }
-    }
+    };
 
-    document.addEventListener("sidebarNavigate", handleSidebarNavigate as EventListener)
+    document.addEventListener(
+      "sidebarNavigate",
+      handleSidebarNavigate as EventListener
+    );
     return () => {
-      document.removeEventListener("sidebarNavigate", handleSidebarNavigate as EventListener)
-    }
-  }, [])
+      document.removeEventListener(
+        "sidebarNavigate",
+        handleSidebarNavigate as EventListener
+      );
+    };
+  }, []);
 
   // Simulate loading state when changing pages
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [currentPage])
+      setIsLoading(false);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [currentPage]);
 
   // If still checking authentication, show loading
   if (loading) {
@@ -68,63 +74,66 @@ export default function Home() {
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
       </div>
-    )
+    );
   }
 
   // If not authenticated, don't render anything (will redirect)
   if (!user) {
-    return null
+    return null;
   }
 
   // Render the appropriate content based on the selected page
   const renderContent = () => {
     if (isLoading) {
-      return <LoadingPlaceholder />
+      return <LoadingPlaceholder />;
     }
 
     switch (currentPage) {
       case "dashboard":
-        return <DashboardContent />
+        return <DashboardContent />;
       case "projects":
-        return <ProjectsContent />
+        return <ProjectsContent />;
       case "users":
-        return <UsersContent />
+        return <UsersContent />;
       case "funding":
-        return <FundingContent />
+        return <FundingContent />;
       case "categories":
-        return <CategoriesContent />
+        return <CategoriesContent />;
       case "settings":
-        return <SettingsContent />
+        return <SettingsContent />;
       default:
-        return <DashboardContent />
+        return <DashboardContent />;
     }
-  }
+  };
 
   // Get the title for the current page
   const getPageTitle = () => {
     switch (currentPage) {
       case "dashboard":
-        return "Dashboard"
+        return "Dashboard";
       case "projects":
-        return "Projects Management"
+        return "Projects Management";
       case "users":
-        return "Users Management"
+        return "Users Management";
       case "funding":
-        return "Funding Overview"
+        return "Funding Overview";
       case "categories":
-        return "Categories Management"
+        return "Categories Management";
       case "settings":
-        return "Settings"
+        return "Settings";
       default:
-        return "Dashboard"
+        return "Dashboard";
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex">
         {/* Sidebar */}
-        <AdminSidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <AdminSidebar
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
 
         {/* Main content */}
         <div className="flex-1 flex flex-col">
@@ -136,7 +145,7 @@ export default function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // Loading placeholder component
@@ -165,5 +174,5 @@ function LoadingPlaceholder() {
         </div>
       </div>
     </div>
-  )
+  );
 }

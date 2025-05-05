@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Layout, Menu, theme, Typography } from "antd"
+import { useState } from "react";
+import { Layout, Menu, theme, Typography } from "antd";
 import {
   DashboardOutlined,
   ProjectOutlined,
@@ -9,44 +9,44 @@ import {
   SettingOutlined,
   BankOutlined,
   TagOutlined,
-} from "@ant-design/icons"
-import AdminHeader from "./admin-header"
-import DashboardContent from "./dashboard-content"
-import ProjectsContent from "./projects-content"
-import UsersContent from "./users-content"
-import SettingsContent from "./settings-content"
-import CategoriesContent from "./categories-content"
-import FundingContent from "./funding-content"
+} from "@ant-design/icons";
+import AdminHeader from "./admin-header";
+import DashboardContent from "./dashboard-content";
+import ProjectsContent from "./projects-content";
+import UsersContent from "./users-content";
+import SettingsContent from "./settings-content";
+import CategoriesContent from "./categories-content";
+import FundingContent from "./funding-content";
 
-const { Content, Sider } = Layout
-const { Title } = Typography
+const { Content, Sider } = Layout;
+const { Title } = Typography;
 
 export default function AdminDashboard() {
-  const [collapsed, setCollapsed] = useState(false)
-  const [selectedKey, setSelectedKey] = useState("dashboard")
+  const [collapsed, setCollapsed] = useState(false);
+  const [selectedKey, setSelectedKey] = useState("dashboard");
 
   const {
     token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken()
+  } = theme.useToken();
 
   const renderContent = () => {
     switch (selectedKey) {
       case "dashboard":
-        return <DashboardContent />
+        return <DashboardContent />;
       case "projects":
-        return <ProjectsContent />
+        return <ProjectsContent />;
       case "users":
-        return <UsersContent />
+        return <UsersContent />;
       case "funding":
-        return <FundingContent />
+        return <FundingContent />;
       case "categories":
-        return <CategoriesContent />
+        return <CategoriesContent />;
       case "settings":
-        return <SettingsContent />
+        return <SettingsContent />;
       default:
-        return <DashboardContent />
+        return <DashboardContent />;
     }
-  }
+  };
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -115,8 +115,10 @@ export default function AdminDashboard() {
           ]}
         />
       </Sider>
-      <Layout style={{ marginLeft: collapsed ? 80 : 200, transition: "all 0.2s" }}>
-        <AdminHeader />
+      <Layout
+        style={{ marginLeft: collapsed ? 80 : 200, transition: "all 0.2s" }}
+      >
+        <AdminHeader title="Dashboard" />
         <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
           <div
             style={{
@@ -131,5 +133,5 @@ export default function AdminDashboard() {
         </Content>
       </Layout>
     </Layout>
-  )
+  );
 }
